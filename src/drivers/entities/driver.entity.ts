@@ -19,15 +19,14 @@ export class Driver {
   vehiculo: string;
 
   @Column({ default: true })
-  disponible: boolean; 
+  disponible: boolean;
 
   @Column({ type: 'float', default: 0 })
-  calificacion: number; 
+  calificacion: number;
 
   @Column({ type: 'float', default: 0 })
-  gananciasTotales: number; 
+  gananciasTotales: number;
 
   @OneToMany(() => Order, (pedido) => pedido.driver)
   pedidos: Order[];
 }
-

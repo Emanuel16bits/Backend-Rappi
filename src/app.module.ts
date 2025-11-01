@@ -9,6 +9,8 @@ import { typeOrmConfig } from './database/typeorm.config';
 import { OrderItemsModule } from './order-items/order-items.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import { DriversModule } from './drivers/drivers.module';
+import { CartModule } from './cart/cart.module';
+import { CartItemModule } from './cart-item/cart-item.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { DriversModule } from './drivers/drivers.module';
     OrderItemsModule,
     FavoritesModule,
     DriversModule,
+    CartModule,
+    CartItemModule,
   ],
 })
 export class AppModule {}

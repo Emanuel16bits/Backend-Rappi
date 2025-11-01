@@ -4,7 +4,7 @@ import { Order } from '../../orders/entities/order.entity';
 import { Restaurant } from '../../restaurants/entities/restaurant.entity';
 import { Product } from '../../products/entities/product.entity';
 import { Favorite } from 'src/favorites/entities/favorite.entity';
-
+import { Cart } from '../../cart/entities/cart.entity';
 
 export enum UserRole {
   CLIENTE = 'cliente',
@@ -45,7 +45,9 @@ export class User {
   @OneToMany(() => Product, (product) => product.usuario)
   productos: Product[];
 
-   @OneToMany(() => Favorite, (favorite) => favorite.usuario)
+  @OneToMany(() => Favorite, (favorite) => favorite.usuario)
   favoritos: Favorite[];
 
+  @OneToMany(() => Cart, (cart) => cart.usuario)
+  carritos: Cart[];
 }
