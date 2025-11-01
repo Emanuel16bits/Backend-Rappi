@@ -16,19 +16,7 @@ export class CartService {
   ) {}
 
   async create(createCartDto: CreateCartDto): Promise<Cart> {
-    const { items = [], ...cartData } = createCartDto;
-
-    const cart = this.cartRepository.create({
-      ...cartData,
-      items: items.map((item) =>
-        this.cartItemRepository.create({
-          idProducto: item.productId,
-          cantidad: item.quantity,
-          precioUnitario: item.price,
-        }),
-      ),
-    });
-
+    const cart = this.cartRepository.create(createCartDto);
     return this.cartRepository.save(cart);
   }
 
@@ -56,16 +44,14 @@ export class CartService {
     if (updateCartDto.activo !== undefined) cart.activo = updateCartDto.activo;
 
     if (updateCartDto.items) {
-      // eliminar items antiguos
-      await this.cartItemRepository.delete({ carrito: { idCart: id } });
+      await this.cartItemRepository.delete({ carritoId: id });
 
-      // agregar los nuevos items
       cart.items = updateCartDto.items.map((item) =>
         this.cartItemRepository.create({
-          idProducto: item.productId,
+          productoId: item.productId,
           cantidad: item.quantity,
           precioUnitario: item.price,
-          carrito: { idCart: id },
+          carritoId: id,
         }),
       );
     }

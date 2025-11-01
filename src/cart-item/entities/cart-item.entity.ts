@@ -13,26 +13,26 @@ import { Product } from '../../products/entities/product.entity';
 @Entity('cart_items')
 export class CartItem {
   @PrimaryGeneratedColumn({ name: 'idCartItem' })
-  idCartItem: number;
+  id: number;
 
   @Column({ name: 'idCart', type: 'int' })
-  idCart: number;
+  carritoId: number;
 
   @ManyToOne(() => Cart, (cart) => cart.items, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'idCart' })
   carrito: Cart;
 
   @Column({ name: 'idProducto', type: 'int' })
-  idProducto: number;
+  productoId: number;
 
   @ManyToOne(() => Product)
   @JoinColumn({ name: 'idProducto' })
   producto: Product;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', default: 1 })
   cantidad: number;
 
-  @Column({ name: 'precioUnitario', type: 'decimal', precision: 10, scale: 2 })
+  @Column('decimal', { precision: 10, scale: 2 })
   precioUnitario: number;
 
   @CreateDateColumn({ name: 'fechaCreacion' })

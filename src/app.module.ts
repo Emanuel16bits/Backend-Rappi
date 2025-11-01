@@ -11,6 +11,7 @@ import { FavoritesModule } from './favorites/favorites.module';
 import { DriversModule } from './drivers/drivers.module';
 import { CartModule } from './cart/cart.module';
 import { CartItemModule } from './cart-item/cart-item.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { CartItemModule } from './cart-item/cart-item.module';
     DriversModule,
     CartModule,
     CartItemModule,
+    PaymentModule,
   ],
 })
 export class AppModule {}

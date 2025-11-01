@@ -4,6 +4,7 @@ import {
   Body,
   Get,
   Param,
+  Put,
   Patch,
   Delete,
   BadRequestException,
@@ -54,6 +55,36 @@ export class CartController {
       });
     }
     return this.cartService.findOne(cartId);
+  }
+
+  @Put(':id')
+  async updatePut(@Param('id') id: string, @Body() body: UpdateCartDto) {
+    const cartId = parseInt(id, 10);
+    if (isNaN(cartId)) {
+      throw new BadRequestException({
+        statusCode: 400,
+        message: 'ID de carrito no válido',
+      });
+    }
+
+    try {
+      const data = await updateCartSchema.validate(body, {
+        abortEarly: false,
+        stripUnknown: true,
+      });
+      return this.cartService.update(cartId, data);
+    } catch (error) {
+      if (error instanceof yup.ValidationError) {
+        throw new BadRequestException({
+          statusCode: 400,
+          message: 'Error de validación',
+          errors: error.errors,
+        });
+      }
+      throw new BadRequestException({
+        statusCode: 400,
+      });
+    }
   }
 
   @Patch(':id')

@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Delete,
+  Put,
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
@@ -61,6 +62,38 @@ export class CartItemController {
       throw new NotFoundException(`Ítem con ID ${id} no encontrado`);
     }
     return item;
+  }
+
+  @Put(':id')
+  async updatePut(@Param('id') id: string, @Body() body: UpdateCartItemDto) {
+    const itemId = parseInt(id, 10);
+    if (isNaN(itemId)) {
+      throw new BadRequestException('ID de ítem no válido');
+    }
+
+    try {
+      const data = await updateCartItemSchema.validate(body, {
+        abortEarly: false,
+        stripUnknown: true,
+      });
+
+      const updatedItem = await this.cartItemService.update(itemId, data);
+      if (!updatedItem) {
+        throw new NotFoundException(
+          `No se pudo actualizar el ítem con ID ${id}`,
+        );
+      }
+      return updatedItem;
+    } catch (error) {
+      if (error instanceof yup.ValidationError) {
+        throw new BadRequestException({
+          statusCode: 400,
+          message: 'Error de validación',
+          errors: error.errors,
+        });
+      }
+      throw error;
+    }
   }
 
   @Patch(':id')

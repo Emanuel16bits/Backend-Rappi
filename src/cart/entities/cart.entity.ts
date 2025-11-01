@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { CartItem } from '../../cart-item/entities/cart-item.entity';
+import { Payment } from '../../payment/entities/payment.entity';
 
 @Entity('carts')
 export class Cart {
@@ -43,4 +44,7 @@ export class Cart {
 
   @OneToMany(() => CartItem, (cartItem) => cartItem.carrito, { cascade: true })
   items: CartItem[];
+
+  @OneToMany(() => Payment, (payment) => payment.carrito)
+  pagos: Payment[];
 }
