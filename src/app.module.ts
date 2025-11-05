@@ -16,8 +16,8 @@ import { PaymentModule } from './payment/payment.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
-    UsersModule,
-    RestaurantsModule,
+    UsersModule, // UsersModule primero
+    RestaurantsModule, // Luego RestaurantsModule
     ProductsModule,
     OrdersModule,
     ReviewsModule,

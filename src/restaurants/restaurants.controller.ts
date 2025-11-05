@@ -7,17 +7,26 @@ import {
   Put,
   Delete,
   Patch,
+  NotFoundException,
 } from '@nestjs/common';
 import { RestaurantsService } from './restaurants.service';
 import type { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import type { UpdateRestaurantDto } from './dto/update-restaurant.dto';
+import { UsersService } from 'src/users/users.service';
 
 @Controller('restaurants')
 export class RestaurantsController {
-  constructor(private readonly restaurantsService: RestaurantsService) {}
+  constructor(
+    private readonly restaurantsService: RestaurantsService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Post()
-  create(@Body() createRestaurantDto: CreateRestaurantDto) {
+  async create(@Body() createRestaurantDto: CreateRestaurantDto) {
+    const user = await this.usersService.findOne(createRestaurantDto.idUsuario);
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
     return this.restaurantsService.create(createRestaurantDto);
   }
 

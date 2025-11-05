@@ -1,4 +1,4 @@
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
   type: 'mysql',
@@ -11,3 +11,9 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   synchronize: true,
   logging: true,
 };
+
+TypeOrmModule.forRoot({
+  // ... otras configuraciones
+  logging: true, // Habilita el logging
+  logger: 'advanced-console', // Muestra consultas detalladas
+});

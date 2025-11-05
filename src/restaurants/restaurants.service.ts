@@ -4,17 +4,27 @@ import { Repository } from 'typeorm';
 import { Restaurant } from './entities/restaurant.entity';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class RestaurantsService {
   constructor(
     @InjectRepository(Restaurant)
     private readonly restaurantRepository: Repository<Restaurant>,
+    private readonly usersService: UsersService, // Solo necesitas UsersService
   ) {}
 
+  // src/restaurants/restaurants.service.ts
   async create(createRestaurantDto: CreateRestaurantDto): Promise<Restaurant> {
-    const restaurant = this.restaurantRepository.create(createRestaurantDto);
-    return await this.restaurantRepository.save(restaurant);
+    const restaurantData = {
+      ...createRestaurantDto,
+      horarioApertura: createRestaurantDto.horarioApertura || '08:00',
+      horarioCierre: createRestaurantDto.horarioCierre || '22:00',
+      activo: createRestaurantDto.activo !== false, // true por defecto
+    };
+
+    const restaurant = this.restaurantRepository.create(restaurantData);
+    return this.restaurantRepository.save(restaurant);
   }
 
   async findAll(): Promise<Restaurant[]> {
